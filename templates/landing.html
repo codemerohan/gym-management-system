@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="hero-section shadow">
+    <div class="hero-content">
+        <h1 class="hero-title">Welcome to FitCore Gym</h1>
+        <p class="hero-subtitle">Transform your body, elevate your mind, and unlock your true potential.</p>
+        {% if not session.get('user_id') %}
+            <a href="{{ url_for('signup') }}" class="btn btn-primary-custom btn-lg px-5 py-3 rounded-pill shadow-sm">Join Us Today</a>
+        {% else %}
+            <h4 class="text-light mt-4">Welcome back, {{ session.get('username') }}!</h4>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row text-center mt-5 mb-5 g-4">
+    <div class="col-12 mb-3">
+        <h2 class="fw-bold">Our World-Class Facilities</h2>
+        <p class="text-muted">Experience premium fitness with our state-of-the-art offerings.</p>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="glass-card h-100">
+            <i class="bi bi-bicycle feature-icon"></i>
+            <h4 class="fw-semibold">Premium Equipment</h4>
+            <p class="text-muted">Train with the latest cardiovascular and strength building machines from industry-leading brands.</p>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="glass-card h-100">
+            <i class="bi bi-person-check feature-icon"></i>
+            <h4 class="fw-semibold">Expert Trainers</h4>
+            <p class="text-muted">Achieve your goals faster with our certified, experienced personal trainers guiding your every step.</p>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="glass-card h-100">
+            <i class="bi bi-cup-hot feature-icon"></i>
+            <h4 class="fw-semibold">Recovery Zones</h4>
+            <p class="text-muted">Relax and rejuvenate in our dedicated sauna, steam rooms, and post-workout nutritional cafes.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

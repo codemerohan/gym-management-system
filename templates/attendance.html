@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <!-- Log Attendance Form -->
+    <div class="col-md-4 mb-4">
+        <div class="form-card h-100">
+            <h3 class="mb-4">Manage Attendance</h3>
+            <form method="POST" action="{{ url_for('attendance') }}">
+                <div class="mb-4">
+                    <label for="member_id" class="form-label">Select Member *</label>
+                    <select class="form-select" id="member_id" name="member_id" required>
+                        <option value="">-- Choose Member --</option>
+                        {% for member in members %}
+                            <option value="{{ member.member_id }}">
+                                {{ member.first_name }} {{ member.last_name }} (ID: {{ member.member_id }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" name="action" value="checkin" class="btn btn-primary-custom w-100">Check In Now</button>
+                    <button type="submit" name="action" value="checkout" class="btn btn-outline-light w-100">Check Out</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Recent Attendance Table -->
+    <div class="col-md-8 mb-4">
+        <div class="table-custom h-100 p-0 border">
+            <div class="p-3 border-bottom" style="background: rgba(0,0,0,0.2);">
+                <h4 class="m-0 text-light">Recent Attendance</h4>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Rec ID</th>
+                            <th>Member Name</th>
+                            <th>Date</th>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr>
+                            <td>#{{ record.attendance_id }}</td>
+                            <td><strong>{{ record.first_name }} {{ record.last_name }}</strong></td>
+                            <td>{{ record.check_in_date }}</td>
+                            <td>{{ record.check_in_time }}</td>
+                            <td>{{ record.check_out_time or 'Pending' }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center py-4">No recent attendance records.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

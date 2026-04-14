@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Member Directory</h2>
+    <a href="{{ url_for('add_member') }}" class="btn btn-primary-custom">Add New Member</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-custom table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Join Date</th>
+                <th>Current Plan</th>
+                <th>Assigned Trainer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+            <tr>
+                <td>{{ member.member_id }}</td>
+                <td><strong>{{ member.first_name }} {{ member.last_name }}</strong></td>
+                <td>{{ member.email }}</td>
+                <td>{{ member.phone or 'N/A' }}</td>
+                <td>{{ member.join_date }}</td>
+                <td>
+                    {% if member.active_plan_name %}
+                        <span class="badge bg-success">{{ member.active_plan_name }}</span>
+                        <div class="small text-muted mt-1">Until {{ member.active_plan_end_date }}</div>
+                    {% else %}
+                        <span class="badge bg-secondary">No Active Plan</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if member.trainer_fname %}
+                        <span class="badge bg-info text-dark">
+                            {{ member.trainer_fname }} {{ member.trainer_lname }}
+                        </span>
+                    {% else %}
+                        <span class="badge bg-secondary">Unassigned</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" class="text-center py-4">No members found in the database.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

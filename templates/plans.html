@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-5">
+    <div class="col-12 text-center">
+        <h2 class="mb-3">Membership Plans</h2>
+        <p class="text-muted">Available subscription tiers for our members.</p>
+    </div>
+</div>
+
+<div class="row justify-content-center mb-4">
+    <div class="col-lg-8">
+        <div class="form-card">
+            <h4 class="mb-3">Add New Membership Plan</h4>
+            <form method="POST" action="{{ url_for('plans') }}" class="row g-3">
+                <div class="col-md-5">
+                    <label for="name" class="form-label">Plan Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="e.g. Premium" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="duration_months" class="form-label">Duration (Months)</label>
+                    <input type="number" min="1" class="form-control" id="duration_months" name="duration_months" placeholder="e.g. 6" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="price" class="form-label">Price ($)</label>
+                    <input type="number" min="0.01" step="0.01" class="form-control" id="price" name="price" placeholder="e.g. 149.99" required>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary-custom">Add Plan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 justify-content-center">
+    {% for plan in plans %}
+    <div class="col-md-4">
+        <div class="card plan-card h-100 p-4">
+            <h4 class="text-uppercase fw-bold text-light">{{ plan.name }}</h4>
+            <div class="plan-price">
+                ${{ "%.2f"|format(plan.price) }}
+            </div>
+            <p class="text-muted mb-4">Valid for {{ plan.duration_months }} month(s)</p>
+            
+            <ul class="list-unstyled text-start mb-4">
+                <li class="mb-2">✔️ Full Gym Access</li>
+                <li class="mb-2">✔️ Free Locker Usage</li>
+                {% if plan.duration_months >= 3 %}
+                <li class="mb-2">✔️ Group Classes Included</li>
+                {% endif %}
+                {% if plan.duration_months >= 12 %}
+                <li class="mb-2">✔️ Complimentary Personal Training</li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12 text-center">
+        <p>No membership plans found in the system.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

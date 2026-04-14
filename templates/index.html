@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-5 mt-3">
+    <div class="col-12 text-center">
+        <h1 class="display-4 fw-bold" style="color: var(--primary-color);">Welcome to FitCore Admin</h1>
+        <p class="lead text-muted">A robust Gym Management System DB Assignment</p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card dash-card h-100 text-center">
+            <div class="card-body">
+                <div class="dash-card-title">Total Members</div>
+                <div class="dash-card-value my-3">{{ total_members }}</div>
+                <p class="text-muted small">Registered in system</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card dash-card h-100 text-center">
+            <div class="card-body">
+                <div class="dash-card-title">Active Subscriptions</div>
+                <div class="dash-card-value my-3">{{ active_subscriptions }}</div>
+                <p class="text-muted small">Currently active members</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card dash-card h-100 text-center">
+            <div class="card-body">
+                <div class="dash-card-title">Total Revenue</div>
+                <div class="dash-card-value my-3">${{ "%.2f"|format(total_revenue) }}</div>
+                <p class="text-muted small">From active memberships</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <h3 class="mb-4 text-light">Quick Actions</h3>
+        <a href="{{ url_for('add_member') }}" class="btn btn-primary-custom btn-lg mx-2">➕ Add New Member</a>
+        <a href="{{ url_for('attendance') }}" class="btn btn-outline-secondary btn-lg mx-2">✅ Quick Check-In</a>
+    </div>
+</div>
+{% endblock %}

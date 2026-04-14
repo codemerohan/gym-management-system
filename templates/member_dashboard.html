@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <h2 class="mb-0">Member Dashboard</h2>
+    <form method="POST" action="{{ url_for('member_dashboard') }}" class="d-flex gap-2">
+        <button type="submit" name="action" value="checkin" class="btn btn-primary-custom">Check In</button>
+        <button type="submit" name="action" value="checkout" class="btn btn-outline-light">Check Out</button>
+    </form>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="form-card">
+            <h5 class="mb-3">Choose Membership Plan</h5>
+            <form method="POST" action="{{ url_for('member_dashboard') }}" class="row g-3 align-items-end">
+                <div class="col-md-8">
+                    <label for="plan_id" class="form-label">Available Plans</label>
+                    <select class="form-select" id="plan_id" name="plan_id" required>
+                        <option value="">-- Select a plan --</option>
+                        {% for plan in available_plans %}
+                            <option value="{{ plan.plan_id }}">
+                                {{ plan.name }} - {{ plan.duration_months }} month(s) - ${{ "%.2f"|format(plan.price) }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4 d-grid">
+                    <button type="submit" name="action" value="subscribe_plan" class="btn btn-primary-custom">Activate Plan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">My Subscriptions</h5>
+            </div>
+            <div class="card-body">
+                {% if subscriptions %}
+                    <ul class="list-group">
+                    {% for sub in subscriptions %}
+                        <li class="list-group-item">
+                            <strong>{{ sub.Plan_Name }}</strong><br>
+                            <small class="text-muted">Start: {{ sub.start_date }} | End: {{ sub.end_date }}</small><br>
+                            <span class="badge {% if sub.status == 'Active' %}bg-success{% else %}bg-secondary{% endif %}">
+                                {{ sub.status }}
+                            </span>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No active subscriptions found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-info text-dark">
+                <h5 class="mb-0">Recent Attendance</h5>
+            </div>
+            <div class="card-body">
+                {% if attendance %}
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Check In</th>
+                                <th>Check Out</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for rec in attendance %}
+                            <tr>
+                                <td>{{ rec.check_in_date }}</td>
+                                <td>{{ rec.check_in_time }}</td>
+                                <td>{{ rec.check_out_time or 'Pending' }}</td>
+                                <td>
+                                    {% if rec.check_out_time %}
+                                        <span class="badge bg-success">Completed</span>
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark">Open Session</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-muted">No check-in records found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

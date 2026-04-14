@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm mt-5 mb-5">
+            <div class="card-header bg-primary text-white text-center">
+                <h4 class="mb-0">Sign Up</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Username (Login ID)</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Role</label>
+                        <select name="role" id="roleSelect" class="form-select" required onchange="toggleFields()">
+                            <option value="">-- Select Role --</option>
+                            <option value="admin">Gym Administrator</option>
+                            <option value="member">Gym Member</option>
+                            <option value="trainer">Trainer</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Fields for Member & Trainer -->
+                    <div id="commonFields" style="display: none;">
+                        <div class="mb-3">
+                            <label class="form-label">First Name</label>
+                            <input type="text" name="first_name" id="first_name" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" name="last_name" id="last_name" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Phone</label>
+                            <input type="text" name="phone" id="phone" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <!-- Fields for Member -->
+                    <div id="memberFields" style="display: none;">
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" id="email" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <!-- Fields for Trainer -->
+                    <div id="trainerFields" style="display: none;">
+                        <div class="mb-3">
+                            <label class="form-label">Specialization</label>
+                            <input type="text" name="specialization" id="specialization" class="form-control">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                Already have an account? <a href="{{ url_for('login') }}">Log In</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleFields() {
+    var role = document.getElementById("roleSelect").value;
+    
+    // Default hiding everything
+    document.getElementById("commonFields").style.display = "none";
+    document.getElementById("memberFields").style.display = "none";
+    document.getElementById("trainerFields").style.display = "none";
+    
+    // Disable required conditionally
+    document.getElementById("first_name").required = false;
+    document.getElementById("last_name").required = false;
+    document.getElementById("email").required = false;
+    
+    if (role === 'member' || role === 'trainer') {
+        document.getElementById("commonFields").style.display = "block";
+        document.getElementById("first_name").required = true;
+        document.getElementById("last_name").required = true;
+    }
+    
+    if (role === 'member') {
+        document.getElementById("memberFields").style.display = "block";
+        document.getElementById("email").required = true;
+    } else if (role === 'trainer') {
+        document.getElementById("trainerFields").style.display = "block";
+    }
+}
+</script>
+{% endblock %}

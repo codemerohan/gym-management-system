@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4">Register New Member</h2>
+        
+        <div class="form-card">
+            <form method="POST" action="{{ url_for('add_member') }}">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="first_name" class="form-label">First Name *</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="last_name" class="form-label">Last Name *</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" required>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address *</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone" name="phone">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="trainer_id" class="form-label">Assign Trainer (Optional)</label>
+                    <select class="form-select" id="trainer_id" name="trainer_id">
+                        <option value="">-- No Trainer --</option>
+                        {% for trainer in trainers %}
+                            <option value="{{ trainer.trainer_id }}">
+                                {{ trainer.first_name }} {{ trainer.last_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="plan_id" class="form-label">Select Membership Plan *</label>
+                    <select class="form-select" id="plan_id" name="plan_id" required>
+                        <option value="">-- Choose Plan --</option>
+                        {% for plan in plans %}
+                            <option value="{{ plan.plan_id }}">
+                                {{ plan.name }} - {{ plan.duration_months }} month(s) - ${{ "%.2f"|format(plan.price) }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary-custom btn-lg">Complete Registration</button>
+                    <a href="{{ url_for('members') }}" class="btn btn-light">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
